@@ -1,24 +1,22 @@
 import './Search.scss'
 import debounce from 'lodash.debounce'
-import { SearchContext } from '../../App'
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 function Search() {
-	const { setSearch } = useContext(SearchContext)
-	const [value, setValue] = useState('')
+	const [value, setValue] = useState<string>('')
 
 	const clearInput = () => {
-		setSearch('')
+		//setSearch('')
 		setValue('')
 	}
 	const startSearch = useCallback(
 		debounce(value => {
-			setSearch(value)
+			//setSearch(value)
 		}, 250),
 		[]
 	)
 
-	const changeValue = str => {
+	const changeValue = (str: string) => {
 		setValue(str)
 		startSearch(value)
 	}

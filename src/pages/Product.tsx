@@ -1,16 +1,23 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-function Product() {
+type ICard = {
+	imageUrl: string
+	title: string
+	price: number
+}
+
+const Product: FC = () => {
 	const params = useParams()
-	const [item, setItem] = useState()
+	const [item, setItem] = useState<ICard>()
 
 	useEffect(() => {
 		const fetchItem = async () => {
 			try {
-				const { data } = await axios('https://656b577fdac3630cf728032b.mockapi.io/items?id=' + params.id)
-				setItem(...data)
+				const res: { data: ICard[] } = await axios('https://656b577fdac3630cf728032b.mockapi.io/items?id=' + params.id)
+
+				setItem(res.data[0])
 			} catch {
 				console.log('error')
 			}

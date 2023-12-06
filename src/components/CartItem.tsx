@@ -1,8 +1,9 @@
-import React from 'react'
+import { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { addItem, minusCount, removeItem } from '../store/slices/cartSlice'
+import { ICard } from '../@types/ICard'
 
-function CartItem({ id, title, price, imageUrl, count, sizes, types }) {
+const CartItem: FC<ICard> = ({ id, title, price, imageUrl, count, sizes, types }) => {
 	const dispatch = useDispatch()
 
 	const pluseProduct = () => {

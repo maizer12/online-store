@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import qs from 'qs'
 import Card from '../components/Card'
@@ -11,17 +11,17 @@ import { setFilterParams } from '../store/slices/filterSlice'
 import { sortList } from '../_config'
 import { fetchCards } from '../store/slices/cardsSlice'
 
-function Home({ search }) {
-	const { items, status } = useSelector(state => state.cardsSlice)
+function Home() {
+	const { items, status } = useSelector((state: any) => state.cardsSlice)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const { category, sort } = useSelector(state => state.filterSlice)
+	const { category, sort } = useSelector((state: any) => state.filterSlice)
 	const loaderItems = [...new Array(4)]
 	const [page, setPage] = useState(1)
 
 	const getParams = () => {
 		const checkCategory = category ? { category } : ''
-		const checkSearch = search ? { search } : ''
+		const checkSearch: {} | '' = '' //search ? { search } : ''
 		const checkSort = sort.value ? { sortBy: sort.value, order: sort.type } : ''
 		const params = {
 			limit: 4,
@@ -33,8 +33,9 @@ function Home({ search }) {
 		return params
 	}
 	const fetchData = async () => {
+		//@ts-ignore
 		const params = getParams()
-		dispatch(fetchCards(params))
+		//dispatch(fetchCards(params))
 	}
 
 	useEffect(() => {
@@ -46,7 +47,7 @@ function Home({ search }) {
 		}
 
 		fetchData()
-	}, [sort, category, search, page])
+	}, [sort, category, page])
 
 	useEffect(() => {
 		const path = window.location.search.substring(1)
@@ -57,7 +58,7 @@ function Home({ search }) {
 		dispatch(setFilterParams(params))
 	}, [])
 
-	const pizzas = items.map(e => <Card {...e} key={e.id} />)
+	const pizzas = items.map((e: any) => <Card {...e} key={e.id} />)
 	const getItems = status == 'loading' ? loaderItems.map((_, i) => <CardSkeleton key={i} />) : pizzas
 
 	return (

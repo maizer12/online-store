@@ -1,10 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
+import { FC } from 'react'
 import LogoIcon from '../assets/images/pizza-logo.svg'
 import Search from './Search'
 import { useSelector } from 'react-redux'
 
-function Header() {
-	const { totalPrice, count } = useSelector(state => state.cartSlice)
+const Header: FC = () => {
+	const { totalPrice, count } = useSelector((state: any) => state.cartSlice)
 	const location = useLocation()
 
 	return (

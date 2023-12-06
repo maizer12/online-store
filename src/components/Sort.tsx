@@ -3,26 +3,36 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSort, sortSelector } from '../store/slices/filterSlice'
 import { sortList } from '../_config'
 
-function Sort() {
-	const windowRef = useRef()
+type SelectItem = {
+	value: string
+	type: string
+	name: string
+}
+
+const Sort = () => {
+	const windowRef = useRef<HTMLDivElement>(null)
 	const select = useSelector(sortSelector)
 	const dispatch = useDispatch()
 	const [open, setOpen] = useState(false)
 	useEffect(() => {
-		const handleOutsideClick = e => {
-			if (!windowRef.current.contains(e.target)) {
+		const handleOutsideClick = (e: Event) => {
+			if (!windowRef?.current?.contains(e.target as Node)) {
 				setOpen(false)
 			}
 		}
 
-		document.body.addEventListener('click', handleOutsideClick)
+		if (windowRef) {
+			document.body.addEventListener('click', handleOutsideClick)
+		}
 
 		return () => {
-			document.body.removeEventListener('click', handleOutsideClick)
+			if (windowRef) {
+				document.body.removeEventListener('click', handleOutsideClick)
+			}
 		}
-	}, [])
+	}, [windowRef, setOpen])
 
-	function selectedItem(e) {
+	function selectedItem(e: SelectItem) {
 		dispatch(setSort(e))
 		setOpen(false)
 	}
