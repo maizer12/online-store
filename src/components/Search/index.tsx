@@ -1,17 +1,20 @@
 import './Search.scss'
 import debounce from 'lodash.debounce'
 import { useCallback, useState } from 'react'
+import { useAppDispatch } from '../../hooks'
+import { setSearch } from '../../store/slices/filterSlice'
 
 function Search() {
 	const [value, setValue] = useState<string>('')
+	const dispatch = useAppDispatch()
 
 	const clearInput = () => {
-		//setSearch('')
+		dispatch(setSearch(value))
 		setValue('')
 	}
 	const startSearch = useCallback(
 		debounce(value => {
-			//setSearch(value)
+			dispatch(setSearch(value))
 		}, 250),
 		[]
 	)

@@ -3,19 +3,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../store/slices/cartSlice'
 import { Link } from 'react-router-dom'
 import { ICard } from '../@types/ICard'
+import { useAppSelector } from '../hooks'
 
 const Card: FC<ICard> = ({ id, title, price, imageUrl, sizes, types }) => {
-	const cartItems = useSelector((state: any) => state.cartSlice.items)
+	const cartItems = useAppSelector(state => state.cartSlice.items)
 	const dispatch = useDispatch()
 	const [activeSize, setActiveSize] = useState(0)
 	const [type, setType] = useState(0)
 	const typeItems = ['тонкое', 'традиционное']
-	const cartItem = cartItems.find((e: any) => e.id == id)
+	const cartItem = cartItems.find((e: any) => e.id === id)
 
 	const count = cartItem ? cartItem.count : 0
 
 	const addToCart = () => {
-		const item = { id, title, price, imageUrl, sizes, types }
+		const item = { id, title, price, imageUrl, sizes, types, count: 0 }
 		dispatch(addItem(item))
 	}
 

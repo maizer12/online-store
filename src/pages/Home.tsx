@@ -10,18 +10,24 @@ import { useNavigate } from 'react-router-dom'
 import { setFilterParams } from '../store/slices/filterSlice'
 import { sortList } from '../_config'
 import { fetchCards } from '../store/slices/cardsSlice'
+import { useAppDispatch, useAppSelector } from '../hooks'
+
+type Params = {
+	limit: number
+	page: number
+}
 
 function Home() {
-	const { items, status } = useSelector((state: any) => state.cardsSlice)
+	const { items, status } = useAppSelector(state => state.cardsSlice)
+	const { category, sort, search } = useAppSelector(state => state.filterSlice)
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
-	const { category, sort } = useSelector((state: any) => state.filterSlice)
+	const dispatch = useAppDispatch()
 	const loaderItems = [...new Array(4)]
 	const [page, setPage] = useState(1)
 
 	const getParams = () => {
 		const checkCategory = category ? { category } : ''
-		const checkSearch: {} | '' = '' //search ? { search } : ''
+		const checkSearch: {} | '' = search ? { search } : ''
 		const checkSort = sort.value ? { sortBy: sort.value, order: sort.type } : ''
 		const params = {
 			limit: 4,
@@ -33,9 +39,8 @@ function Home() {
 		return params
 	}
 	const fetchData = async () => {
-		//@ts-ignore
 		const params = getParams()
-		//dispatch(fetchCards(params))
+		dispatch(fetchCards(params))
 	}
 
 	useEffect(() => {
@@ -47,19 +52,19 @@ function Home() {
 		}
 
 		fetchData()
-	}, [sort, category, page])
+	}, [sort, category, search, page])
 
 	useEffect(() => {
 		const path = window.location.search.substring(1)
 		const pars = qs.parse(path)
-		const sortName = sortList.find(e => e.type == pars.order && e.value == pars.sortBy)
+		const sortName = sortList.find(e => e.type === pars.order && e.value === pars.sortBy)
 		const sort = sortName ? { value: pars.sortBy, type: pars.order, name: sortName.name } : ''
 		const params = { category: pars.category, sort }
 		dispatch(setFilterParams(params))
 	}, [])
 
 	const pizzas = items.map((e: any) => <Card {...e} key={e.id} />)
-	const getItems = status == 'loading' ? loaderItems.map((_, i) => <CardSkeleton key={i} />) : pizzas
+	const getItems = status === 'loading' ? loaderItems.map((_, i) => <CardSkeleton key={i} />) : pizzas
 
 	return (
 		<div className='content'>

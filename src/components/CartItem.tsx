@@ -7,7 +7,7 @@ const CartItem: FC<ICard> = ({ id, title, price, imageUrl, count, sizes, types }
 	const dispatch = useDispatch()
 
 	const pluseProduct = () => {
-		dispatch(addItem({ id }))
+		dispatch(addItem({ id } as ICard))
 	}
 
 	const minusProduct = () => {
@@ -39,7 +39,7 @@ const CartItem: FC<ICard> = ({ id, title, price, imageUrl, count, sizes, types }
 				</div>
 			</div>
 			<div className='cart__item-price'>
-				<b>{price * count} ₽</b>
+				<b>{count && price * count} ₽</b>
 			</div>
 			<div className='cart__item-remove' onClick={() => dispatch(removeItem(id))}>
 				<div className='button button--outline button--circle'>
