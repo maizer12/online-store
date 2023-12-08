@@ -2,7 +2,7 @@ import React from 'react'
 import CartEmpty from '../components/CartEmpty'
 import CartItem from '../components/CartItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearItems } from '../store/slices/cartSlice'
+import { clearItems } from '../store/slices/cart/slice'
 
 function Cart() {
 	const { items, totalPrice, count } = useSelector((state: any) => state.cartSlice)

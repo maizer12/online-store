@@ -1,9 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { categorySelector, setCategories } from '../store/slices/filterSlice'
+import { useWhyDidYouUpdate } from 'ahooks'
+import { memo } from 'react'
 
 const items: string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
-const Categories = () => {
+const Categories = memo(() => {
 	const active = useSelector(categorySelector)
 	const dispatch = useDispatch()
 
@@ -18,6 +20,6 @@ const Categories = () => {
 			</ul>
 		</div>
 	)
-}
+})
 
 export default Categories

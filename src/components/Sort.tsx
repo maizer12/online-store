@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSort, sortSelector } from '../store/slices/filterSlice'
 import { sortList } from '../_config'
@@ -9,7 +9,7 @@ type SelectItem = {
 	name: string
 }
 
-const Sort = () => {
+const Sort = memo(() => {
 	const windowRef = useRef<HTMLDivElement>(null)
 	const select = useSelector(sortSelector)
 	const dispatch = useDispatch()
@@ -61,6 +61,6 @@ const Sort = () => {
 			)}
 		</div>
 	)
-}
+})
 
 export default Sort

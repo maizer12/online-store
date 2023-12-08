@@ -1,12 +1,30 @@
 import { Link, useLocation } from 'react-router-dom'
-import { FC } from 'react'
+import { FC, memo, useEffect, useRef } from 'react'
 import LogoIcon from '../assets/images/pizza-logo.svg'
 import Search from './Search'
-import { useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { getItems } from '../store/slices/cart/slice'
+import { CartTypes } from '../store/slices/cart/type'
 
-const Header: FC = () => {
-	const { totalPrice, count } = useSelector((state: any) => state.cartSlice)
+const Header: FC = memo(() => {
+	const { items, totalPrice, count } = useAppSelector(state => state.cartSlice)
 	const location = useLocation()
+	const dispatch = useAppDispatch()
+	const isFirst = useRef<Boolean>(true)
+
+	useEffect(() => {
+		const cart = localStorage.getItem('cart')
+		const items: false | CartTypes = cart && JSON.parse(cart)
+		if (items) dispatch(getItems(items))
+	}, [])
+
+	useEffect(() => {
+		if (!isFirst.current) {
+			const cart = JSON.stringify({ items, totalPrice, count })
+			localStorage.setItem('cart', cart)
+		}
+		isFirst.current = false
+	}, [items])
 
 	return (
 		<div className='header'>
@@ -36,6 +54,6 @@ const Header: FC = () => {
 			</div>
 		</div>
 	)
-}
+})
 
 export default Header

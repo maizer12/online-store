@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICard } from '../../@types/ICard'
-
-interface CartTypes {
-	items: ICard[]
-	totalPrice: number
-	count: number
-}
+import { CartTypes } from './type'
+import { ICard } from '../../../@types/ICard'
 
 const initialState: CartTypes = {
 	items: [],
@@ -51,9 +46,16 @@ const cartSlice = createSlice({
 			state.count = 0
 			state.totalPrice = 0
 		},
+		getItems(state, actions: PayloadAction<CartTypes>) {
+			const { items, count, totalPrice } = actions.payload
+
+			state.items = items
+			state.count = count
+			state.totalPrice = totalPrice
+		},
 	},
 })
 
-export const { addItem, minusCount, removeItem, clearItems } = cartSlice.actions
+export const { addItem, minusCount, removeItem, clearItems, getItems } = cartSlice.actions
 
 export default cartSlice.reducer

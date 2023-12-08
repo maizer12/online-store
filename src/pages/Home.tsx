@@ -9,13 +9,8 @@ import Pagination from '../components/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { setFilterParams } from '../store/slices/filterSlice'
 import { sortList } from '../_config'
-import { fetchCards } from '../store/slices/cardsSlice'
+import { fetchCards } from '../store/slices/card/asyncActions'
 import { useAppDispatch, useAppSelector } from '../hooks'
-
-type Params = {
-	limit: number
-	page: number
-}
 
 function Home() {
 	const { items, status } = useAppSelector(state => state.cardsSlice)
